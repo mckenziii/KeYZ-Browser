@@ -1,0 +1,36 @@
+# Rebuilds index.json whenever mods change on the main branch (for example after
+# the owner merges a reviewed script mod, or removes one).
+name: Build mod index
+
+on:
+  push:
+    branches: [main, master]
+    paths: ["mods/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mod-index
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build index.json
+        shell: pwsh
+        run: ./tools/build-index.ps1 -Repo "${{ github.repository }}"
+
+      - name: Commit it
+        run: |
+          git config user.name "keyz-store-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Update the mod index"
+          git push
