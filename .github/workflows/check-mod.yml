@@ -25,13 +25,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the store's own scripts
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: base
           fetch-depth: 0
 
       - name: Check out the pull request's files (read only, never run)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.sha }}
