@@ -1,9 +1,9 @@
 {
   "format": "keyz-mod-index",
   "version": 1,
-  "generated": "2026-11-03T07:17:18.6888247Z",
+  "generated": "2026-11-03T07:22:42.6089648Z",
   "repo": "mckenziii/KeYZ-Browser",
-  "commit": "606419417c083f77fdfa2ff6ec5cad6a7f31ff37",
+  "commit": "20b48632e74bb596939fe314e1ca5bbbca062246",
   "mods": [
     {
       "id": "keyz-glow",
