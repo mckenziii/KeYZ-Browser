@@ -1,0 +1,10 @@
+{
+  "id": "rainbow-tabs",
+  "name": "Rainbow tabs",
+  "version": "1.0.0",
+  "description": "A rainbow stripe under the selected tab. The store's first mod.",
+  "type": "style",
+  "author": "mckenziii",
+  "tags": ["tabs", "colours"],
+  "files": ["rainbow-tabs.uc.css"]
+}
