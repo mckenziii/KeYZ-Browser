@@ -1,0 +1,15 @@
+{
+    "id":  "keyz-glow",
+    "name":  "KeYZ glow",
+    "version":  "1.0.0",
+    "description":  "A soft periwinkle glow around the selected tab, in the KeYZ colours.",
+    "type":  "style",
+    "author":  "mckenziii",
+    "tags":  [
+                 "tabs",
+                 "glow"
+             ],
+    "files":  [
+                  "keyz-glow.uc.css"
+              ]
+}

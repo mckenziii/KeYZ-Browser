@@ -1,0 +1,4 @@
+/* @description A soft periwinkle glow around the selected tab */
+.tabbrowser-tab[selected] .tab-background {
+  box-shadow: 0 0 10px 1px color-mix(in srgb, #8fb3ff 55%, transparent) !important;
+}
