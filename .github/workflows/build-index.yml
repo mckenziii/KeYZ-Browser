@@ -18,19 +18,26 @@ jobs:
   index:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Build index.json
-        shell: pwsh
-        run: ./tools/build-index.ps1 -Repo "${{ github.repository }}"
-
-      - name: Commit it
+      - name: Build and commit index.json
+        env:
+          BRANCH: ${{ github.ref_name }}
         run: |
           git config user.name "keyz-store-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Update the mod index"
-          git push
+          # The branch can move on while this runs (another merge, or the check
+          # workflow's own index update), so each try starts from its newest commit.
+          for attempt in 1 2 3; do
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            pwsh ./tools/build-index.ps1 -Repo "${{ github.repository }}"
+            git add index.json
+            git diff --cached --quiet && exit 0
+            git commit -m "Update the mod index"
+            git push origin "HEAD:$BRANCH" && exit 0
+            sleep 5
+          done
+          exit 1
