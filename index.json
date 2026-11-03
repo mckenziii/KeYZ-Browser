@@ -1,10 +1,31 @@
 {
   "format": "keyz-mod-index",
   "version": 1,
-  "generated": "",
+  "generated": "2026-11-03T07:17:18.6888247Z",
   "repo": "mckenziii/KeYZ-Browser",
-  "commit": "HEAD",
+  "commit": "606419417c083f77fdfa2ff6ec5cad6a7f31ff37",
   "mods": [
+    {
+      "id": "keyz-glow",
+      "name": "KeYZ glow",
+      "version": "1.0.0",
+      "description": "A soft periwinkle glow around the selected tab, in the KeYZ colours.",
+      "type": "style",
+      "author": "mckenziii",
+      "tags": [
+        "tabs",
+        "glow"
+      ],
+      "updated": "2026-11-03T07:17:16Z",
+      "files": [
+        {
+          "name": "keyz-glow.uc.css",
+          "sha256": "2d7c4d214f44d8107ef578b3ce5d1442f69c2938dbe9f92af152e37eab762428",
+          "size": 196
+        }
+      ],
+      "preview": null
+    },
     {
       "id": "rainbow-tabs",
       "name": "Rainbow tabs",
@@ -12,9 +33,18 @@
       "description": "A rainbow stripe under the selected tab. The store's first mod.",
       "type": "style",
       "author": "mckenziii",
-      "tags": ["tabs", "colours"],
-      "updated": "",
-      "files": [{ "name": "rainbow-tabs.uc.css", "sha256": "9048fc4e6c07f46e92ec57c1129a91f03221014592e26979ca16cc91ec293dc6", "size": 328 }],
+      "tags": [
+        "tabs",
+        "colours"
+      ],
+      "updated": "2026-11-02T23:16:44-08:00",
+      "files": [
+        {
+          "name": "rainbow-tabs.uc.css",
+          "sha256": "9048fc4e6c07f46e92ec57c1129a91f03221014592e26979ca16cc91ec293dc6",
+          "size": 328
+        }
+      ],
       "preview": null
     }
   ]
