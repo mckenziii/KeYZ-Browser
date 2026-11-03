@@ -1,0 +1,21 @@
+{
+  "format": "keyz-mod-index",
+  "version": 1,
+  "generated": "",
+  "repo": "mckenziii/KeYZ-Browser",
+  "commit": "HEAD",
+  "mods": [
+    {
+      "id": "rainbow-tabs",
+      "name": "Rainbow tabs",
+      "version": "1.0.0",
+      "description": "A rainbow stripe under the selected tab. The store's first mod.",
+      "type": "style",
+      "author": "mckenziii",
+      "tags": ["tabs", "colours"],
+      "updated": "",
+      "files": [{ "name": "rainbow-tabs.uc.css", "sha256": "9048fc4e6c07f46e92ec57c1129a91f03221014592e26979ca16cc91ec293dc6", "size": 328 }],
+      "preview": null
+    }
+  ]
+}
