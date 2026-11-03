@@ -1,0 +1,28 @@
+name: Report a mod
+description: Tell the store owner about a harmful or broken mod.
+labels: [report]
+body:
+  - type: input
+    id: mod
+    attributes:
+      label: Mod id
+      description: The name in the store, or the folder under mods/.
+      placeholder: rainbow-tabs
+    validations:
+      required: true
+  - type: dropdown
+    id: reason
+    attributes:
+      label: What's wrong?
+      options:
+        - It's harmful (steals data, spies, ads)
+        - It breaks the browser
+        - It doesn't work
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What happened? Which KeYZ Browser version?
