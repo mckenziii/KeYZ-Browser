@@ -1,0 +1,87 @@
+# Checks every pull request to the store. Style mods that pass are merged right
+# away; script mods get the needs-review label for the owner.
+#
+# Safety: pull_request_target runs with this repository's permissions, so the
+# pull request's files are only *read* by the store's own scripts (checked out
+# from the main branch) - nothing from the pull request is ever executed. Only
+# numbers, logins and repository names (safe characters) go into commands.
+name: Check mod
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: mod-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the store's own scripts
+        uses: actions/checkout@v4
+        with:
+          path: base
+          fetch-depth: 0
+
+      - name: Check out the pull request's files (read only, never run)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: pr
+          persist-credentials: false
+
+      - name: List changed files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+          --paginate --jq '.[] | [.filename, .status] | @tsv' > changed.tsv
+
+      - name: Validate
+        id: validate
+        shell: pwsh
+        run: ./base/tools/validate.ps1 -Base base -Pr pr -Changed changed.tsv -Author '${{ github.event.pull_request.user.login }}' -Owner '${{ github.repository_owner }}'
+
+      - name: Comment
+        if: always() && hashFiles('report.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file report.md
+
+      - name: Publish style mod
+        if: steps.validate.outputs.ok == 'true' && steps.validate.outputs.type == 'style'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --squash
+          cd base
+          git config user.name "keyz-store-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git pull --ff-only origin "$BRANCH"
+            pwsh ./tools/build-index.ps1 -Repo "${{ github.repository }}"
+            git add index.json
+            git diff --cached --quiet && exit 0
+            git commit -m "Update the mod index"
+            git push origin "HEAD:$BRANCH" && exit 0
+            git reset --hard "origin/$BRANCH"
+            sleep 5
+          done
+          exit 1
+
+      - name: Ask the owner to review (script mod)
+        if: steps.validate.outputs.ok == 'true' && steps.validate.outputs.type == 'script'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create needs-review --repo "${{ github.repository }}" --color FBCA04 --description "Script mod waiting for the owner's review" || true
+          gh pr edit "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --add-label needs-review
