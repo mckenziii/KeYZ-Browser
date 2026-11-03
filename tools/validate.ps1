@@ -1,11 +1,8 @@
 <#
 .SYNOPSIS
-  Checks a pull request to the KeYZ mod store (run by .github/workflows/check-mod.yml).
+
 
 .DESCRIPTION
-  Reads the pull request's files as plain data - nothing from the pull request is
-  ever run. Writes report.md (posted as a comment) and the step outputs ok, type
-  and id. Exits 1 when the mod can't be published, so the check shows red.
 #>
 param(
   [Parameter(Mandatory = $true)] [string] $Base,
