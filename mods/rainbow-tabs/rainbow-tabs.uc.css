@@ -1,0 +1,7 @@
+/* @description Rainbow stripe under the selected tab */
+.tabbrowser-tab[selected] .tab-background {
+  background-image: linear-gradient(90deg, #ff5f6d, #ffc371, #47e891, #4facfe, #a18cd1) !important;
+  background-size: 100% 3px !important;
+  background-repeat: no-repeat !important;
+  background-position: bottom !important;
+}
